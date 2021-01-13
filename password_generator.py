@@ -7,6 +7,7 @@ root.title("Password Generator")
 root.geometry('400x310')
 root.maxsize(400,310)
 
+
 #Class for changing button color when highlighting with cursor
 class HoverButton(Button):
 
@@ -21,6 +22,13 @@ class HoverButton(Button):
 
 	def on_leave(self,z):
 		self["background"] = self.defaultBackground
+
+#Class which automatically packs frames on instantiation
+class WindowFrame(Frame):
+
+	def __init__(self,master,**kwargs):
+		Frame.__init__(self,master=master,**kwargs)
+		self.pack()
 
 #Primary password generator function
 def pass_gen():
@@ -71,8 +79,7 @@ def pass_gen():
 
 	#Generates and checks passwords until it finds one that satisfies all conditions:
 	if source:
-		looper = True
-		while looper:
+		while True:
 			trial_password = simple_generation()
 			if (min_num_clicked.get() > 0) and (num_var.get() == 1):
 				if number_check(trial_password):
@@ -112,8 +119,7 @@ greeting.pack(pady=5)
 e = Entry(root, width=35, borderwidth=2)
 e.pack()
 
-frame1 = Frame(root)
-frame1.pack()
+frame1 = WindowFrame(root)
 
 lc_var = IntVar()
 lc_button = Checkbutton(frame1, text="Lowercase",variable=lc_var)
@@ -125,8 +131,7 @@ uc_button = Checkbutton(frame1, text="Uppercase",variable=uc_var)
 uc_button.pack(side="right",pady=2,padx=3)
 uc_button.select()
 
-frame2 = Frame(root)
-frame2.pack()
+frame2 = WindowFrame(root)
 
 num_var = IntVar()
 num_button = Checkbutton(frame2, text="Numbers",variable=num_var)
@@ -137,8 +142,7 @@ sym_var = IntVar()
 sym_button = Checkbutton(frame2, text="Symbols",variable=sym_var)
 sym_button.pack(side="right",pady=2,padx=11)
 
-frame3 = Frame(root)
-frame3.pack()
+frame3 = WindowFrame(root)
 
 min_num_label = Label(frame3,text="Select minimum amount of numbers:")
 min_num_label.pack(side="left")
@@ -149,8 +153,7 @@ min_num_bar = OptionMenu(frame3,min_num_clicked,*min_num_options)
 min_num_bar.configure(activebackground="#d4d4ff")
 min_num_bar.pack(side="left",pady=5)
 
-frame4 = Frame(root)
-frame4.pack()
+frame4 = WindowFrame(root)
 
 min_sym_label = Label(frame4,text="Select minimum amount of symbols:")
 min_sym_label.pack(side="left")
@@ -161,8 +164,7 @@ min_sym_bar = OptionMenu(frame4,min_sym_clicked,*min_sym_options)
 min_sym_bar.configure(activebackground="#d4d4ff")
 min_sym_bar.pack(side="right",pady=5)
 
-frame5 = Frame(root)
-frame5.pack()
+frame5 = WindowFrame(root)
 
 len_label = Label(frame5,text="Select length of password (between 8-32 characters):")
 len_label.pack(side="left")
@@ -173,8 +175,7 @@ len_bar = OptionMenu(frame5, len_clicked, *len_options)
 len_bar.configure(activebackground="#c9c9f2")
 len_bar.pack(side="right",pady=5)
 
-frame6 = Frame(root)
-frame6.pack()
+frame6 = WindowFrame(root)
 
 generate_button = HoverButton(frame6,text="Generate", padx=25, pady=4,borderwidth=3,command=pass_gen)
 generate_button.configure(activebackground="#c9c9f2")
