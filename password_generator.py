@@ -143,7 +143,7 @@ sym_button.pack(side="right",pady=2,padx=11)
 
 min_num_label = Label(frames["3"],text="Select minimum amount of numbers:")
 min_num_label.pack(side="left")
-min_num_options = [0,1,2,3]
+min_num_options = [i for i in range(0,4)]
 min_num_clicked = IntVar()
 min_num_clicked.set(min_num_options[1])
 min_num_bar = OptionMenu(frames["3"],min_num_clicked,*min_num_options)
@@ -152,7 +152,7 @@ min_num_bar.pack(side="left",pady=5)
 
 min_sym_label = Label(frames["4"],text="Select minimum amount of symbols:")
 min_sym_label.pack(side="left")
-min_sym_options = [0,1,2,3]
+min_sym_options = [i for i in range(0,4)]
 min_sym_clicked = IntVar()
 min_sym_clicked.set(min_sym_options[1])
 min_sym_bar = OptionMenu(frames["4"],min_sym_clicked,*min_sym_options)
@@ -161,7 +161,7 @@ min_sym_bar.pack(side="right",pady=5)
 
 len_label = Label(frames["5"],text="Select length of password (between 8-32 characters):")
 len_label.pack(side="left")
-len_options = [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]
+len_options = [i for i in range(8,33)]
 len_clicked = IntVar()
 len_clicked.set(len_options[0])
 len_bar = OptionMenu(frames["5"], len_clicked, *len_options)
