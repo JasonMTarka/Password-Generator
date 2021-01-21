@@ -3,10 +3,9 @@ import tkinter as tk
 import pyperclip
 
 # Class which builds UI
-class MainApplication(tk.Frame):
+class MainApplication():
 
-	def __init__(self,*args,**kwargs):
-		super().__init__()
+	def __init__(self):
 		self.init_UI()
 
 	def init_UI(self):
@@ -19,66 +18,66 @@ class MainApplication(tk.Frame):
 
 		frames = {}
 		for i in range(1,7):
-			frames[f"{i}"] = PackedFrame(root)
+			frames[i] = PackedFrame(root)
 
 		lc_var = tk.IntVar()
-		lc_button = tk.Checkbutton(frames["1"], text="Lowercase",variable=lc_var)
+		lc_button = tk.Checkbutton(frames[1], text="Lowercase",variable=lc_var)
 		lc_button.pack(side="left",pady=2,padx=3)
 		lc_button.select()
 		self.lc_var = lc_var
 
 		uc_var = tk.IntVar()
-		uc_button = tk.Checkbutton(frames["1"], text="Uppercase",variable=uc_var)
+		uc_button = tk.Checkbutton(frames[1], text="Uppercase",variable=uc_var)
 		uc_button.pack(side="right",pady=2,padx=3)
 		uc_button.select()
 		self.uc_var = uc_var
 
 		num_var = tk.IntVar()
-		num_button = tk.Checkbutton(frames["2"], text="Numbers",variable=num_var)
+		num_button = tk.Checkbutton(frames[2], text="Numbers",variable=num_var)
 		num_button.pack(side="left",pady=2,padx=1)
 		num_button.select()
 		self.num_var = num_var
 
 		sym_var = tk.IntVar()
-		sym_button = tk.Checkbutton(frames["2"], text="Symbols",variable=sym_var)
+		sym_button = tk.Checkbutton(frames[2], text="Symbols",variable=sym_var)
 		sym_button.pack(side="right",pady=2,padx=11)
 		self.sym_var = sym_var
 
-		min_num_label = tk.Label(frames["3"],text="Select minimum amount of numbers:")
+		min_num_label = tk.Label(frames[3],text="Select minimum amount of numbers:")
 		min_num_label.pack(side="left")
 		min_num_options = [i for i in range(0,4)]
 		min_num_clicked = tk.IntVar()
 		min_num_clicked.set(min_num_options[1])
-		min_num_bar = tk.OptionMenu(frames["3"],min_num_clicked,*min_num_options)
+		min_num_bar = tk.OptionMenu(frames[3],min_num_clicked,*min_num_options)
 		min_num_bar.configure(activebackground="#d4d4ff")
 		min_num_bar.pack(side="left",pady=5)
 		self.min_num_clicked = min_num_clicked
 
-		min_sym_label = tk.Label(frames["4"],text="Select minimum amount of symbols:")
+		min_sym_label = tk.Label(frames[4],text="Select minimum amount of symbols:")
 		min_sym_label.pack(side="left")
 		min_sym_options = [i for i in range(0,4)]
 		min_sym_clicked = tk.IntVar()
 		min_sym_clicked.set(min_sym_options[1])
-		min_sym_bar = tk.OptionMenu(frames["4"],min_sym_clicked,*min_sym_options)
+		min_sym_bar = tk.OptionMenu(frames[4],min_sym_clicked,*min_sym_options)
 		min_sym_bar.configure(activebackground="#d4d4ff")
 		min_sym_bar.pack(side="right",pady=5)
 		self.min_sym_clicked = min_sym_clicked
 
-		len_label = tk.Label(frames["5"],text="Select length of password (between 8-32 characters):")
+		len_label = tk.Label(frames[5],text="Select length of password (between 8-32 characters):")
 		len_label.pack(side="left")
 		len_options = [i for i in range(8,33)]
 		len_clicked = tk.IntVar()
 		len_clicked.set(len_options[0])
-		len_bar = tk.OptionMenu(frames["5"], len_clicked, *len_options)
+		len_bar = tk.OptionMenu(frames[5], len_clicked, *len_options)
 		len_bar.configure(activebackground="#c9c9f2")
 		len_bar.pack(side="right",pady=5)
 		self.len_clicked = len_clicked
 
-		generate_button = HoverButton(frames["6"],text="Generate", padx=25, pady=4,borderwidth=3,command=pass_gen)
+		generate_button = HoverButton(frames[6],text="Generate", padx=25, pady=4,borderwidth=3,command=pass_gen)
 		generate_button.configure(activebackground="#c9c9f2")
 		generate_button.pack(padx=5,pady=5,side="left")
 
-		copy_button = HoverButton(frames["6"], text="Copy Password", padx=15, pady=4, borderwidth=3,command=copier)
+		copy_button = HoverButton(frames[6], text="Copy Password", padx=15, pady=4, borderwidth=3,command=copier)
 		copy_button.configure(activebackground="#d4d4ff")
 		copy_button.pack(padx=5,pady=5,side="right")
 
