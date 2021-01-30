@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, shuffle
 import tkinter as tk
 import pyperclip
 
@@ -46,7 +46,7 @@ class MainApplication:
 
 		min_num_label = tk.Label(frames[3],text="Select minimum amount of numbers:")
 		min_num_label.pack(side="left")
-		min_num_options = [i for i in range(0,4)]
+		min_num_options = [i for i in range(0,5)]
 		min_num_clicked = tk.IntVar()
 		min_num_clicked.set(min_num_options[1])
 		min_num_bar = tk.OptionMenu(frames[3],min_num_clicked,*min_num_options)
@@ -56,7 +56,7 @@ class MainApplication:
 
 		min_sym_label = tk.Label(frames[4],text="Select minimum amount of symbols:")
 		min_sym_label.pack(side="left")
-		min_sym_options = [i for i in range(0,4)]
+		min_sym_options = [i for i in range(0,5)]
 		min_sym_clicked = tk.IntVar()
 		min_sym_clicked.set(min_sym_options[1])
 		min_sym_bar = tk.OptionMenu(frames[4],min_sym_clicked,*min_sym_options)
@@ -110,8 +110,18 @@ def pass_gen():
 	# Creates a random password with the selected parameters:
 	def simple_generation():
 		password = []
-		for i in range(0,int(app.len_clicked.get())):
+
+		if app.num_var.get() == 1:
+			for i in range(0,int(app.min_num_clicked.get())):
+				password.append(choice(NUMS))
+		if app.sym_var.get() == 1:
+			for i in range(0,int(app.min_sym_clicked.get())):
+				password.append(choice(SYMBOLS))
+		while len(password) < app.len_clicked.get():
 			password.append(choice(source))
+
+		shuffle(password)
+
 		return password
 
 	# Sends the finished password to the GUI and resets the password source:
@@ -119,22 +129,6 @@ def pass_gen():
 		app.e.delete(0,tk.END)
 		app.e.insert(0,"".join(password))
 		source = "" #Resets source variable for the next password
-
-	# Checks a password to see if there are enough numbers according to parameters:
-	def number_check(password):
-		filtered_list = [True for i in password if i in NUMS]
-		if len(filtered_list) < app.min_num_clicked.get():
-			return False
-		else:
-			return True
-
-	# Checks a password to see if there are enough symbols according to parameters:
-	def sym_check(password):
-		filtered_list = [True for i in password if i in SYMBOLS]
-		if len(filtered_list) < app.min_sym_clicked.get():
-			return False
-		else:
-			return True
 
 	# Following code collects parameters and adds them to a source variable from which passwords are generated:
 	source = ""
@@ -155,33 +149,11 @@ def pass_gen():
 	if app.sym_var.get() == 1:
 		source += SYMBOLS
 
-	# Generates and checks passwords until it finds one that satisfies all conditions:
+	# Generates and delivers a password according to the selected parameters
 	if source:
-		while True:
-			trial_password = simple_generation()
-			if (app.min_num_clicked.get() > 0) and (app.num_var.get() == 1):
-				if number_check(trial_password):
-					if (app.min_sym_clicked.get() > 0) and (app.sym_var.get() == 1):
-						if sym_check(trial_password):
-							password_delivery(trial_password)
-							break
-						else:
-							pass
-					else:
-						password_delivery(trial_password)
-						break
-				else:
-					pass
+		password = simple_generation()
+		password_delivery(password)
 
-			elif (app.min_sym_clicked.get() > 0) and (app.sym_var.get() == 1):
-				if sym_check(trial_password):
-					password_delivery(trial_password)
-					break
-				else:
-					pass
-			else:
-				password_delivery(trial_password)
-				break
 	else:
 		app.e.delete(0,tk.END)
 		app.e.insert(0,"Please select at least one category.")
@@ -193,7 +165,6 @@ def copier():
 # Function which sets up the interactive window
 def main(root):
 	root.title("Password Generator")
-	root.iconbitmap("C:/Users/jason/MyPythonScripts/Portfolio/Password_Generator/key.ico")
 	root.geometry('400x310')
 	root.resizable(height = False, width = False)
 	root.mainloop()
