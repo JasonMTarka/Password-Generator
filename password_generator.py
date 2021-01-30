@@ -3,7 +3,7 @@ import tkinter as tk
 import pyperclip
 
 # Class which builds UI
-class MainApplication():
+class MainApplication:
 
 	def __init__(self):
 		self.init_UI()
@@ -16,6 +16,7 @@ class MainApplication():
 		e.pack()
 		self.e = e
 
+		# Creates six frames for UI layout
 		frames = {}
 		for i in range(1,7):
 			frames[i] = PackedFrame(root)
@@ -121,7 +122,7 @@ def pass_gen():
 
 	# Checks a password to see if there are enough numbers according to parameters:
 	def number_check(password):
-		filtered_list = [True for i in password if i in "0123456789"]
+		filtered_list = [True for i in password if i in NUMS]
 		if len(filtered_list) < app.min_num_clicked.get():
 			return False
 		else:
@@ -129,7 +130,7 @@ def pass_gen():
 
 	# Checks a password to see if there are enough symbols according to parameters:
 	def sym_check(password):
-		filtered_list = [True for i in password if i in "!@#$%&*"]
+		filtered_list = [True for i in password if i in SYMBOLS]
 		if len(filtered_list) < app.min_sym_clicked.get():
 			return False
 		else:
@@ -137,18 +138,22 @@ def pass_gen():
 
 	# Following code collects parameters and adds them to a source variable from which passwords are generated:
 	source = ""
+	NUMS = "0123456789"
+	LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
+	UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	SYMBOLS = "!@#$%^&*"
 
 	if app.lc_var.get() == 1:
-		source += "abcdefghijklmnopqrstuvwxyz"
+		source += LOWERCASE
 
 	if app.uc_var.get() == 1:
-		source += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		source += UPPERCASE
 
 	if app.num_var.get() == 1:
-		source += "0123456789"
+		source += NUMS
 
 	if app.sym_var.get() == 1:
-		source += "!@#$%^&*"
+		source += SYMBOLS
 
 	# Generates and checks passwords until it finds one that satisfies all conditions:
 	if source:
