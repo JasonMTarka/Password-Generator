@@ -163,15 +163,13 @@ def copier():
 	pyperclip.copy(app.e.get())
 
 # Function which sets up the interactive window
-def main():
-	global root, app
-	root = tk.Tk()
-	app = MainApplication()
+def main(root):
 	root.title("Password Generator")
 	root.geometry('400x310')
 	root.resizable(height = False, width = False)
 	root.mainloop()
 
 if __name__ == "__main__":
-	
-	main()
+	root = tk.Tk()
+	app = MainApplication()
+	main(root)
