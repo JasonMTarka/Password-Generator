@@ -78,7 +78,7 @@ class MainApplication:
 		generate_button.configure(activebackground="#c9c9f2")
 		generate_button.pack(padx=5,pady=5,side="left")
 
-		copy_button = HoverButton(frames[6], text="Copy Password", padx=15, pady=4, borderwidth=3,command=copier)
+		copy_button = HoverButton(frames[6], text="Copy Password", padx=15, pady=4, borderwidth=3,command= lambda: pyperclip.copy(app.e.get()))
 		copy_button.configure(activebackground="#d4d4ff")
 		copy_button.pack(padx=5,pady=5,side="right")
 
@@ -157,10 +157,6 @@ def pass_gen():
 	else:
 		app.e.delete(0,tk.END)
 		app.e.insert(0,"Please select at least one category.")
-
-# Function which copies the finished password to clipboard
-def copier():
-	pyperclip.copy(app.e.get())
 
 # Function which sets up the interactive window
 def main():
