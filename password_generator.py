@@ -1,6 +1,7 @@
-from random import choice, shuffle
 import tkinter as tk
 import pyperclip
+import os
+from random import choice, shuffle
 
 # Class which builds UI
 class MainApplication:
@@ -164,6 +165,7 @@ def main():
 	root = tk.Tk()
 	app = MainApplication()
 	root.title("Password Generator")
+	root.iconbitmap(os.environ.get("PASSWORD_GEN_KEY_ICON"))
 	root.geometry('400x310')
 	root.resizable(height = False, width = False)
 	root.mainloop()
