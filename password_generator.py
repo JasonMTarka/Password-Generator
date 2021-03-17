@@ -5,11 +5,18 @@ from random import choice, shuffle
 
 # Class which builds UI
 class MainApplication:
-
 	def __init__(self):
-		self.init_UI()
+		self._initUI()
+		
+	# Bus between Password class and Tkinter UI
+	def _password_delivery(self):
+		password = Password(lowercase=self.lc_var.get(), uppercase=self.uc_var.get(), nums=self.num_var.get(), syms=self.sym_var.get(),  
+				 min_nums=self.min_num_clicked.get(), min_syms=self.min_sym_clicked.get(), pass_len=self.len_clicked.get())
+		password.generate()
+		app.e.delete(0,tk.END)
+		app.e.insert(0,password)
 
-	def init_UI(self):
+	def _initUI(self):
 		greeting = tk.Label(root,text="Generate random passwords!", width=40, borderwidth=0, pady=10)
 		greeting.pack(pady=5)
 
@@ -75,7 +82,7 @@ class MainApplication:
 		len_bar.pack(side="right",pady=5)
 		self.len_clicked = len_clicked
 
-		generate_button = HoverButton(frames[6],text="Generate", padx=25, pady=4,borderwidth=3,command=pass_gen)
+		generate_button = HoverButton(frames[6],text="Generate", padx=25, pady=4,borderwidth=3,command=self._password_delivery)
 		generate_button.configure(activebackground="#c9c9f2")
 		generate_button.pack(padx=5,pady=5,side="left")
 
@@ -85,7 +92,6 @@ class MainApplication:
 
 # Class for changing button color when highlighting with cursor
 class HoverButton(tk.Button):
-
 	def __init__(self,master, **kwargs):
 		tk.Button.__init__(self,master=master,**kwargs)
 		self.defaultBackground=self["background"]
@@ -100,64 +106,60 @@ class HoverButton(tk.Button):
 
 # Class which automatically packs frames on instantiation
 class PackedFrame(tk.Frame):
-
 	def __init__(self,master,**kwargs):
 		tk.Frame.__init__(self,master=master,**kwargs)
 		self.pack()
 
-# Primary password generator function
-def pass_gen():
+class Password:
+	def __init__(self, lowercase=1, uppercase=1, nums=1, syms=0,  
+				 min_nums=2, min_syms=2, pass_len=8, value=None):
+		self.nums = nums
+		self.syms = syms
+		self.lowercase = lowercase
+		self.uppercase = uppercase
+		self.min_nums = min_nums
+		self.min_syms = min_syms
+		self.pass_len = pass_len
+		self.value = value
 
-	# Creates a random password with the selected parameters:
-	def simple_generation():
-		password = []
+	def __repr__(self):
+		if self.value:
+			return self.value
+		else:
+			return "None"
 
-		if app.num_var.get() == 1:
-			for i in range(0,int(app.min_num_clicked.get())):
-				password.append(choice(NUMS))
-		if app.sym_var.get() == 1:
-			for i in range(0,int(app.min_sym_clicked.get())):
-				password.append(choice(SYMBOLS))
-		while len(password) < app.len_clicked.get():
-			password.append(choice(source))
+	def generate(self):
+		def _constructor():
+				temp_password = []
+				if self.nums:
+					for i in range(0, self.min_nums):
+						temp_password.append(choice(NUMS))
+				if self.syms:
+					for i in range(0, self.min_syms):
+						temp_password.append(choice(SYMBOLS))
+				while len(temp_password) < self.pass_len:
+					temp_password.append(choice(source))
+				shuffle(temp_password)
+				return temp_password
 
-		shuffle(password)
+		source= ""
+		LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
+		UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		NUMS = "0123456789"
+		SYMBOLS = "!@#$%^&*"
 
-		return password
-
-	# Sends the finished password to the GUI and resets the password source:
-	def password_delivery(password):
-		app.e.delete(0,tk.END)
-		app.e.insert(0,"".join(password))
-		source = "" #Resets source variable for the next password
-
-	# Following code collects parameters and adds them to a source variable from which passwords are generated:
-	source = ""
-	NUMS = "0123456789"
-	LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
-	UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	SYMBOLS = "!@#$%^&*"
-
-	if app.lc_var.get() == 1:
-		source += LOWERCASE
-
-	if app.uc_var.get() == 1:
-		source += UPPERCASE
-
-	if app.num_var.get() == 1:
-		source += NUMS
-
-	if app.sym_var.get() == 1:
-		source += SYMBOLS
-
-	# Generates and delivers a password according to the selected parameters
-	if source:
-		password = simple_generation()
-		password_delivery(password)
-
-	else:
-		app.e.delete(0,tk.END)
-		app.e.insert(0,"Please select at least one category.")
+		if self.lowercase:
+			source += LOWERCASE
+		if self.uppercase:
+			source += UPPERCASE
+		if self.nums:
+			source += NUMS
+		if self.syms:
+			source += SYMBOLS
+		
+		if source:
+			password = _constructor()
+			self.value = "".join(password)
 
 # Function which sets up the interactive window
 def main():
