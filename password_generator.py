@@ -137,6 +137,8 @@ class Password:
 				if self.syms:
 					for i in range(0, self.min_syms):
 						temp_password.append(choice(SYMBOLS))
+				while len(temp_password) > self.pass_len:
+					temp_password.pop()
 				while len(temp_password) < self.pass_len:
 					temp_password.append(choice(source))
 				shuffle(temp_password)
