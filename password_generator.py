@@ -12,7 +12,6 @@ class MainApplication:
 	def _password_delivery(self):
 		password = Password(lowercase=self.lc_var.get(), uppercase=self.uc_var.get(), nums=self.num_var.get(), syms=self.sym_var.get(),  
 				 min_nums=self.min_num_clicked.get(), min_syms=self.min_sym_clicked.get(), pass_len=self.len_clicked.get())
-		password.generate()
 		app.e.delete(0,tk.END)
 		app.e.insert(0,password)
 
@@ -90,26 +89,6 @@ class MainApplication:
 		copy_button.configure(activebackground="#d4d4ff")
 		copy_button.pack(padx=5,pady=5,side="right")
 
-# Class for changing button color when highlighting with cursor
-class HoverButton(tk.Button):
-	def __init__(self,master, **kwargs):
-		tk.Button.__init__(self,master=master,**kwargs)
-		self.defaultBackground=self["background"]
-		self.bind("<Enter>", self.on_enter)
-		self.bind("<Leave>", self.on_leave)
-
-	def on_enter(self,z):
-		self["background"] = self["activebackground"]
-
-	def on_leave(self,z):
-		self["background"] = self.defaultBackground
-
-# Class which automatically packs frames on instantiation
-class PackedFrame(tk.Frame):
-	def __init__(self,master,**kwargs):
-		tk.Frame.__init__(self,master=master,**kwargs)
-		self.pack()
-
 class Password:
 	def __init__(self, lowercase=1, uppercase=1, nums=1, syms=0,  
 				 min_nums=2, min_syms=2, pass_len=8, value=None):
@@ -121,12 +100,20 @@ class Password:
 		self.min_syms = min_syms
 		self.pass_len = pass_len
 		self.value = value
+		if self.value == None:
+			self.generate()
 
 	def __repr__(self):
 		if self.value:
 			return self.value
 		else:
-			return "None"
+			return "Please select at least one character set."
+
+	def __len__(self):
+		return self.pass_len
+
+	def __getitem__(self, position):
+		return self.value[position]
 
 	def generate(self):
 		def _constructor():
@@ -162,6 +149,28 @@ class Password:
 		if source:
 			password = _constructor()
 			self.value = "".join(password)
+
+# Class for changing button color when highlighting with cursor
+class HoverButton(tk.Button):
+	def __init__(self, master, **kwargs):
+		tk.Button.__init__(self,master=master,**kwargs)
+		self.defaultBackground=self["background"]
+		self.bind("<Enter>", self.on_enter)
+		self.bind("<Leave>", self.on_leave)
+
+	def on_enter(self,z):
+		self["background"] = self["activebackground"]
+
+	def on_leave(self,z):
+		self["background"] = self.defaultBackground
+
+# Class which automatically packs frames on instantiation
+class PackedFrame(tk.Frame):
+	def __init__(self,master,**kwargs):
+		tk.Frame.__init__(self,master=master,**kwargs)
+		self.pack()
+
+
 
 # Function which sets up the interactive window
 def main():
