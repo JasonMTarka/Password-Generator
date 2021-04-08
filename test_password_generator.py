@@ -1,7 +1,7 @@
 import unittest
 import password_generator
 
-class TestReader(unittest.TestCase):
+class TestPasswordGenerator(unittest.TestCase):
 
     def test_generate(self):
         password = password_generator.Password(pass_len=100)
