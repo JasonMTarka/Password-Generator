@@ -7,28 +7,29 @@ from random import choice, shuffle
 
 
 class MainApplication:
-    def __init__(self):
+    def __init__(self, root):
+        self.root = root
         self._initUI()
 
     # Bus between Password class and Tkinter UI
     def _password_delivery(self):
         password = Password(lowercase=self.lc_var.get(), uppercase=self.uc_var.get(), nums=self.num_var.get(), syms=self.sym_var.get(),
                             min_nums=self.min_num_clicked.get(), min_syms=self.min_sym_clicked.get(), pass_len=self.len_clicked.get())
-        app.e.delete(0, tk.END)
-        app.e.insert(0, password)
+        self.e.delete(0, tk.END)
+        self.e.insert(0, password)
 
     def _initUI(self):
-        greeting = tk.Label(root, text="Generate random passwords!", width=40, borderwidth=0, pady=10)
+        greeting = tk.Label(self.root, text="Generate random passwords!", width=40, borderwidth=0, pady=10)
         greeting.pack(pady=5)
 
-        e = tk.Entry(root, width=35, borderwidth=2)
+        e = tk.Entry(self.root, width=35, borderwidth=2)
         e.pack()
         self.e = e
 
         # Creates six frames for UI layout
         frames = {}
         for i in range(1, 7):
-            frames[i] = PackedFrame(root)
+            frames[i] = PackedFrame(self.root)
 
         lc_var = tk.IntVar()
         lc_button = tk.Checkbutton(frames[1], text="Lowercase", variable=lc_var)
@@ -87,7 +88,7 @@ class MainApplication:
         generate_button.configure(activebackground="#c9c9f2")
         generate_button.pack(padx=5, pady=5, side="left")
 
-        copy_button = HoverButton(frames[6], text="Copy Password", padx=15, pady=4, borderwidth=3, command=lambda: pyperclip.copy(app.e.get()))
+        copy_button = HoverButton(frames[6], text="Copy Password", padx=15, pady=4, borderwidth=3, command=lambda: pyperclip.copy(self.e.get()))
         copy_button.configure(activebackground="#d4d4ff")
         copy_button.pack(padx=5, pady=5, side="right")
 
@@ -107,6 +108,10 @@ class Password:
             self.generate()
 
     def __repr__(self):
+        return f"""Password(lowercase={self.lowercase}, uppercase={self.uppercase}, nums={self.nums}, syms={self.syms},
+                 min_nums={self.min_nums}, min_syms={self.min_syms}, pass_len={self.pass_len}, value={self.value})"""
+
+    def __str__(self):
         if self.value:
             return self.value
         else:
@@ -117,6 +122,11 @@ class Password:
 
     def __getitem__(self, position):
         return self.value[position]
+
+    def __add__(self, other):
+        if isinstance(other, Password):
+            return self.value + other.value
+        return NotImplemented
 
     def generate(self):
         def _constructor():
@@ -180,9 +190,8 @@ class PackedFrame(tk.Frame):
 
 # Function which sets up the interactive window
 def main():
-    global root, app
     root = tk.Tk()
-    app = MainApplication()
+    MainApplication(root)
     root.title("Password Generator")
     root.iconbitmap(os.environ.get("PASSWORD_GEN_KEY_ICON"))
     root.geometry('400x310')
