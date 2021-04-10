@@ -1,18 +1,18 @@
 import tkinter as tk
 import pyperclip
 import os
-from random import choice, shuffle
 
-# Class which builds UI
+from random import choice, shuffle
 
 
 class MainApplication:
+    # Class which builds UI
     def __init__(self, root):
         self.root = root
         self._initUI()
 
-    # Bus between Password class and Tkinter UI
     def _password_delivery(self):
+        # Bus between Password class and Tkinter UI
         password = Password(lowercase=self.lc_var.get(), uppercase=self.uc_var.get(), nums=self.num_var.get(), syms=self.sym_var.get(),
                             min_nums=self.min_num_clicked.get(), min_syms=self.min_sym_clicked.get(), pass_len=self.len_clicked.get())
         self.e.delete(0, tk.END)
@@ -124,9 +124,10 @@ class Password:
         return self.value[position]
 
     def __add__(self, other):
-        if isinstance(other, Password):
+        try:
             return self.value + other.value
-        return NotImplemented
+        except AttributeError as e:
+            return f"AttributeError: {other} has no attribute {e}!"
 
     def generate(self):
         def _constructor():
@@ -163,10 +164,9 @@ class Password:
             password = _constructor()
             self.value = "".join(password)
 
-# Class for changing button color when highlighting with cursor
-
 
 class HoverButton(tk.Button):
+    # Class for changing button color when highlighting with cursor
     def __init__(self, master, **kwargs):
         tk.Button.__init__(self, master=master, **kwargs)
         self.defaultBackground = self["background"]
@@ -179,17 +179,16 @@ class HoverButton(tk.Button):
     def on_leave(self, z):
         self["background"] = self.defaultBackground
 
-# Class which automatically packs frames on instantiation
-
 
 class PackedFrame(tk.Frame):
+    # Class which automatically packs frames on instantiation
     def __init__(self, master, **kwargs):
         tk.Frame.__init__(self, master=master, **kwargs)
         self.pack()
 
 
-# Function which sets up the interactive window
 def main():
+    # Function which sets up the interactive window
     root = tk.Tk()
     MainApplication(root)
     root.title("Password Generator")
