@@ -1,24 +1,25 @@
 import tkinter as tk
-import pyperclip
+import pyperclip  # type: ignore
 import os
+from typing import Optional, Union, Any
 
 from random import choice, shuffle
 
 
 class MainApplication:
     # Class which builds UI
-    def __init__(self, root):
+    def __init__(self, root) -> None:
         self.root = root
         self._initUI()
 
-    def _password_delivery(self):
+    def _password_delivery(self) -> None:
         # Bus between Password class and Tkinter UI
         password = Password(lowercase=self.lc_var.get(), uppercase=self.uc_var.get(), nums=self.num_var.get(), syms=self.sym_var.get(),
                             min_nums=self.min_num_clicked.get(), min_syms=self.min_sym_clicked.get(), pass_len=self.len_clicked.get())
         self.e.delete(0, tk.END)
         self.e.insert(0, password)
 
-    def _initUI(self):
+    def _initUI(self) -> None:
         greeting = tk.Label(self.root, text="Generate random passwords!", width=40, borderwidth=0, pady=10)
         greeting.pack(pady=5)
 
@@ -56,8 +57,8 @@ class MainApplication:
 
         min_num_label = tk.Label(frames[3], text="Select minimum amount of numbers:")
         min_num_label.pack(side="left")
-        min_num_options = [i for i in range(0, 5)]
-        min_num_clicked = tk.IntVar()
+        min_num_options = [str(i) for i in range(0, 5)]
+        min_num_clicked = tk.StringVar()
         min_num_clicked.set(min_num_options[1])
         min_num_bar = tk.OptionMenu(frames[3], min_num_clicked, *min_num_options)
         min_num_bar.configure(activebackground="#d4d4ff")
@@ -66,8 +67,8 @@ class MainApplication:
 
         min_sym_label = tk.Label(frames[4], text="Select minimum amount of symbols:")
         min_sym_label.pack(side="left")
-        min_sym_options = [i for i in range(0, 5)]
-        min_sym_clicked = tk.IntVar()
+        min_sym_options = [str(i) for i in range(0, 5)]
+        min_sym_clicked = tk.StringVar()
         min_sym_clicked.set(min_sym_options[1])
         min_sym_bar = tk.OptionMenu(frames[4], min_sym_clicked, *min_sym_options)
         min_sym_bar.configure(activebackground="#d4d4ff")
@@ -76,8 +77,8 @@ class MainApplication:
 
         len_label = tk.Label(frames[5], text="Select length of password (between 8-32 characters):")
         len_label.pack(side="left")
-        len_options = [i for i in range(8, 33)]
-        len_clicked = tk.IntVar()
+        len_options = [str(i) for i in range(8, 33)]
+        len_clicked = tk.StringVar()
         len_clicked.set(len_options[0])
         len_bar = tk.OptionMenu(frames[5], len_clicked, *len_options)
         len_bar.configure(activebackground="#c9c9f2")
@@ -94,43 +95,47 @@ class MainApplication:
 
 
 class Password:
-    def __init__(self, lowercase=1, uppercase=1, nums=1, syms=0,
-                 min_nums=2, min_syms=2, pass_len=8, value=None):
-        self.nums = nums
-        self.syms = syms
-        self.lowercase = lowercase
-        self.uppercase = uppercase
-        self.min_nums = min_nums
-        self.min_syms = min_syms
-        self.pass_len = pass_len
+
+    _STR_OR_INT = Union[str, int]
+
+    def __init__(self, lowercase: _STR_OR_INT = 1, uppercase: _STR_OR_INT = 1, nums: _STR_OR_INT = 1, syms: _STR_OR_INT = 0,
+                 min_nums: _STR_OR_INT = 2, min_syms: _STR_OR_INT = 2, pass_len: _STR_OR_INT = 2, value: Optional[str] = None) -> None:
+        self.nums = int(nums)
+        self.syms = int(syms)
+        self.lowercase = int(lowercase)
+        self.uppercase = int(uppercase)
+        self.min_nums = int(min_nums)
+        self.min_syms = int(min_syms)
+        self.pass_len = int(pass_len)
         self.value = value
         if self.value is None:
             self.generate()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"""Password(lowercase={self.lowercase}, uppercase={self.uppercase}, nums={self.nums}, syms={self.syms},
                  min_nums={self.min_nums}, min_syms={self.min_syms}, pass_len={self.pass_len}, value={self.value})"""
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.value:
             return self.value
         else:
             return "Please select at least one character set."
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.pass_len
 
-    def __getitem__(self, position):
+    def __getitem__(self, position: int) -> Union[str, Any]:
+        assert self.value is not None
         return self.value[position]
 
-    def __add__(self, other):
+    def __add__(self, other) -> str:
         try:
             return self.value + other.value
         except AttributeError as e:
             return f"AttributeError: {other} has no attribute {e}!"
 
-    def generate(self):
-        def _constructor():
+    def generate(self) -> None:
+        def _constructor() -> str:
             temp_password = []
             if self.nums:
                 for i in range(0, self.min_nums):
@@ -143,7 +148,7 @@ class Password:
             while len(temp_password) < self.pass_len:
                 temp_password.append(choice(source))
             shuffle(temp_password)
-            return temp_password
+            return "".join(temp_password)
 
         source = ""
         LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
@@ -161,33 +166,32 @@ class Password:
             source += SYMBOLS
 
         if source:
-            password = _constructor()
-            self.value = "".join(password)
+            self.value = _constructor()
 
 
 class HoverButton(tk.Button):
     # Class for changing button color when highlighting with cursor
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, **kwargs) -> None:
         tk.Button.__init__(self, master=master, **kwargs)
         self.defaultBackground = self["background"]
         self.bind("<Enter>", self.on_enter)
         self.bind("<Leave>", self.on_leave)
 
-    def on_enter(self, z):
+    def on_enter(self, z) -> None:
         self["background"] = self["activebackground"]
 
-    def on_leave(self, z):
+    def on_leave(self, z) -> None:
         self["background"] = self.defaultBackground
 
 
 class PackedFrame(tk.Frame):
     # Class which automatically packs frames on instantiation
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, **kwargs) -> None:
         tk.Frame.__init__(self, master=master, **kwargs)
         self.pack()
 
 
-def main():
+def main() -> None:
     # Function which sets up the interactive window
     root = tk.Tk()
     MainApplication(root)
