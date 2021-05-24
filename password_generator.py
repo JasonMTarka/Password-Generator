@@ -99,7 +99,7 @@ class Password:
     _STR_OR_INT = Union[str, int]
 
     def __init__(self, lowercase: _STR_OR_INT = 1, uppercase: _STR_OR_INT = 1, nums: _STR_OR_INT = 1, syms: _STR_OR_INT = 0,
-                 min_nums: _STR_OR_INT = 2, min_syms: _STR_OR_INT = 2, pass_len: _STR_OR_INT = 2, value: Optional[str] = None) -> None:
+                 min_nums: _STR_OR_INT = 2, min_syms: _STR_OR_INT = 2, pass_len: _STR_OR_INT = 8, value: Optional[str] = None) -> None:
         self.nums = int(nums)
         self.syms = int(syms)
         self.lowercase = int(lowercase)
