@@ -1,13 +1,13 @@
 import tkinter as tk
-import pyperclip  # type: ignore
+import pyperclip
 import os
 from typing import Optional, Union, Any
 
 from random import choice, shuffle
 
-
+# Class which manages UI
 class MainApplication:
-    # Class which builds UI
+
     def __init__(self, root) -> None:
         self.root = root
         self._initUI()
@@ -135,6 +135,7 @@ class Password:
             return f"AttributeError: {other} has no attribute {e}!"
 
     def generate(self) -> None:
+
         def _constructor() -> str:
             temp_password = []
             if self.nums:
@@ -168,9 +169,9 @@ class Password:
         if source:
             self.value = _constructor()
 
-
+# Class for changing button color when highlighting with cursor
 class HoverButton(tk.Button):
-    # Class for changing button color when highlighting with cursor
+
     def __init__(self, master, **kwargs) -> None:
         tk.Button.__init__(self, master=master, **kwargs)
         self.defaultBackground = self["background"]
@@ -183,9 +184,9 @@ class HoverButton(tk.Button):
     def on_leave(self, z) -> None:
         self["background"] = self.defaultBackground
 
-
+# Class which automatically packs frames on instantiation
 class PackedFrame(tk.Frame):
-    # Class which automatically packs frames on instantiation
+
     def __init__(self, master, **kwargs) -> None:
         tk.Frame.__init__(self, master=master, **kwargs)
         self.pack()
