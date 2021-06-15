@@ -1,4 +1,4 @@
-from typing import Optional, Union, Any
+from typing import Optional, Union, Any, TYPE_CHECKING
 from random import choice, shuffle
 
 
@@ -33,7 +33,8 @@ class Password:
         return self.pass_len
 
     def __getitem__(self, position: int) -> Union[str, Any]:
-        assert self.value is not None
+        if TYPE_CHECKING:
+            assert self.value is not None
         return self.value[position]
 
     def __add__(self, other) -> str:
