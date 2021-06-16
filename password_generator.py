@@ -1,4 +1,4 @@
-from typing import Optional, Union, Any, TYPE_CHECKING
+from typing import Union, Any
 from random import choice, shuffle
 
 
@@ -7,7 +7,7 @@ class Password:
     _STR_OR_INT = Union[str, int]
 
     def __init__(self, lowercase: _STR_OR_INT = 1, uppercase: _STR_OR_INT = 1, nums: _STR_OR_INT = 1, syms: _STR_OR_INT = 0,
-                 min_nums: _STR_OR_INT = 2, min_syms: _STR_OR_INT = 2, pass_len: _STR_OR_INT = 8, value: Optional[str] = None) -> None:
+                 min_nums: _STR_OR_INT = 2, min_syms: _STR_OR_INT = 2, pass_len: _STR_OR_INT = 8, value: str = "") -> None:
         self.nums = int(nums)
         self.syms = int(syms)
         self.lowercase = int(lowercase)
@@ -16,7 +16,7 @@ class Password:
         self.min_syms = int(min_syms)
         self.pass_len = int(pass_len)
         self.value = value
-        if self.value is None:
+        if not self.value:
             self.generate()
 
     def __repr__(self) -> str:
@@ -33,8 +33,6 @@ class Password:
         return self.pass_len
 
     def __getitem__(self, position: int) -> Union[str, Any]:
-        if TYPE_CHECKING:
-            assert self.value is not None
         return self.value[position]
 
     def __add__(self, other) -> str:
