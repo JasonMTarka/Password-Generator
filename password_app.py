@@ -4,21 +4,27 @@ import tkinter as tk
 
 from password_generator import Password
 
-# Class which manages UI
+
 class MainApplication:
+    """Class which builds and manages UI."""
 
     def __init__(self, root) -> None:
+        """Set root as self.root and begin UI initialization."""
+
         self.root = root
         self._initUI()
 
     def _password_delivery(self) -> None:
-        # Bus between Password class and Tkinter UI
+        """Delivery information between Password class and Tkinter UI."""
+
         password = Password(lowercase=self.lc_var.get(), uppercase=self.uc_var.get(), nums=self.num_var.get(), syms=self.sym_var.get(),
                             min_nums=self.min_num_clicked.get(), min_syms=self.min_sym_clicked.get(), pass_len=self.len_clicked.get())
         self.e.delete(0, tk.END)
         self.e.insert(0, password)
 
     def _initUI(self) -> None:
+        """Create Tkinter UI."""
+
         greeting = tk.Label(self.root, text="Generate random passwords!", width=40, borderwidth=0, pady=10)
         greeting.pack(pady=5)
 
@@ -93,31 +99,41 @@ class MainApplication:
         copy_button.pack(padx=5, pady=5, side="right")
 
 
-# Class for changing button color when highlighting with cursor
 class HoverButton(tk.Button):
+    """Class for changing button color when highlighting with cursor."""
 
     def __init__(self, master, **kwargs) -> None:
+        """Initialize a Tkinter button and Enter/Leave bindings."""
+
         tk.Button.__init__(self, master=master, **kwargs)
         self.defaultBackground = self["background"]
         self.bind("<Enter>", self.on_enter)
         self.bind("<Leave>", self.on_leave)
 
     def on_enter(self, z) -> None:
+        """Define entrance functionality."""
+
         self["background"] = self["activebackground"]
 
     def on_leave(self, z) -> None:
+        """Define exit functionality."""
+
         self["background"] = self.defaultBackground
 
-# Class which automatically packs frames on instantiation
+
 class PackedFrame(tk.Frame):
+    """Subclass for automatically packing frames on instantiation."""
 
     def __init__(self, master, **kwargs) -> None:
+        """Instantiate frame and pack."""
+
         tk.Frame.__init__(self, master=master, **kwargs)
         self.pack()
 
 
 def main() -> None:
-    # Function which sets up the interactive window
+    """Set up interactive window."""
+
     root = tk.Tk()
     MainApplication(root)
     root.title("Password Generator")

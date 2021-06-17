@@ -39,7 +39,7 @@ class TestPasswordGenerator(unittest.TestCase):
         password1 = password_generator.Password(value="5231ja&!")
         password2 = password_generator.Password(value="abCD#*cjzu4")
         self.assertEqual(password1 + password2, "5231ja&!abCD#*cjzu4")
-        self.assertEqual(password1 + "abCD#*cjzu4", "AttributeError: abCD#*cjzu4 has no attribute 'str' object has no attribute 'value'!")
+        self.assertEqual(password1 + "abCD#*cjzu4", "5231ja&!abCD#*cjzu4")
 
     def test_iteration(self):
         password = password_generator.Password(value="abCD#*cjzu4")
