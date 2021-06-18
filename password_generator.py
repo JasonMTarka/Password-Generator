@@ -7,14 +7,21 @@ class Password:
 
     _STR_OR_INT = Union[str, int]
 
-    def __init__(self, lowercase: _STR_OR_INT = 1, uppercase: _STR_OR_INT = 1, nums: _STR_OR_INT = 1, syms: _STR_OR_INT = 0,
-                 min_nums: _STR_OR_INT = 2, min_syms: _STR_OR_INT = 2, pass_len: _STR_OR_INT = 8, value: str = "") -> None:
-        """Set instance variables to given parameters and generate a password."""
+    def __init__(self,
+                 lowercase: _STR_OR_INT = 1,
+                 uppercase: _STR_OR_INT = 1,
+                 nums: _STR_OR_INT = 1,
+                 syms: _STR_OR_INT = 0,
+                 min_nums: _STR_OR_INT = 2,
+                 min_syms: _STR_OR_INT = 2,
+                 pass_len: _STR_OR_INT = 8,
+                 value: str = "") -> None:
+        """Set instance variables and generate a password."""
 
-        self.nums = int(nums)
-        self.syms = int(syms)
         self.lowercase = int(lowercase)
         self.uppercase = int(uppercase)
+        self.nums = int(nums)
+        self.syms = int(syms)
         self.min_nums = int(min_nums)
         self.min_syms = int(min_syms)
         self.pass_len = int(pass_len)
@@ -25,8 +32,16 @@ class Password:
     def __repr__(self) -> str:
         """Return string which can be used to instantiate this instance."""
 
-        return f"""Password(lowercase={self.lowercase}, uppercase={self.uppercase}, nums={self.nums}, syms={self.syms},
-                 min_nums={self.min_nums}, min_syms={self.min_syms}, pass_len={self.pass_len}, value={self.value})"""
+        return (
+            f"Password("
+            f"lowercase={self.lowercase},"
+            f"uppercase={self.uppercase},"
+            f"nums={self.nums},"
+            f"syms={self.syms},"
+            f"min_nums={self.min_nums},"
+            f"min_syms={self.min_syms},"
+            f"pass_len={self.pass_len},"
+            f"value={self.value})")
 
     def __str__(self) -> str:
         """Return password value as a string."""
@@ -58,7 +73,7 @@ class Password:
         """Generate a password from instance attributes."""
 
         def _constructor() -> str:
-            """Create temporary empty password and append requested characters."""
+            """Create empty password and append requested characters."""
 
             temp_password = []
             if self.nums:
