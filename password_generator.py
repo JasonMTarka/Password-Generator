@@ -1,21 +1,23 @@
-from typing import Union, Any
+from typing import Any
 from random import choice, shuffle
 
 
 class Password:
     """Set password generation parameters and generate passwords."""
 
-    _STR_OR_INT = Union[str, int]
+    _STR_OR_INT = str | int
 
-    def __init__(self,
-                 lowercase: _STR_OR_INT = 1,
-                 uppercase: _STR_OR_INT = 1,
-                 nums: _STR_OR_INT = 1,
-                 syms: _STR_OR_INT = 0,
-                 min_nums: _STR_OR_INT = 2,
-                 min_syms: _STR_OR_INT = 2,
-                 pass_len: _STR_OR_INT = 8,
-                 value: str = "") -> None:
+    def __init__(
+        self,
+        lowercase: _STR_OR_INT = 1,
+        uppercase: _STR_OR_INT = 1,
+        nums: _STR_OR_INT = 1,
+        syms: _STR_OR_INT = 0,
+        min_nums: _STR_OR_INT = 2,
+        min_syms: _STR_OR_INT = 2,
+        pass_len: _STR_OR_INT = 8,
+        value: str = "",
+    ) -> None:
         """Set instance variables and generate a password."""
 
         self.lowercase = int(lowercase)
@@ -41,7 +43,8 @@ class Password:
             f"min_nums={self.min_nums},"
             f"min_syms={self.min_syms},"
             f"pass_len={self.pass_len},"
-            f"value={self.value})")
+            f"value={self.value})"
+        )
 
     def __str__(self) -> str:
         """Return password value as a string."""
@@ -56,7 +59,7 @@ class Password:
 
         return self.pass_len
 
-    def __getitem__(self, position: int) -> Union[str, Any]:
+    def __getitem__(self, position: int) -> str | Any:
         """Allow iterating over password characters."""
 
         return self.value[position]
